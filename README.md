@@ -1,40 +1,26 @@
 # FLO Backend (NestJS)
 
-Minimal NestJS backend scaffold implementing modules described in original README.
-
-Endpoints (base /api):
-
-- LLMModule
-  - POST /api/llm/coaching/init/:userId  -> send initial context
-  - POST /api/llm/coaching/chat/:userId  -> chat messages
-
-- UsersModule
-  - POST /api/users/login { username }
-  - GET /api/users/tool-config
-  - GET /api/users/coaching-config
-  - POST /api/users/plan/:userId { plan }
-  - POST /api/users/plan/update/:userId { delta }
-  - GET /api/users/plan/:userId
-
-- ConversationPersistModule
-  - POST /api/conversation/save/:userId/:sessionId { messages }
-  - GET  /api/conversation/read/:userId/:sessionId
-
-- MonitoringModule
-  - POST /api/monitoring/session/new/:sessionId { data }
-  - POST /api/monitoring/session/end/:sessionId { data }
-  - GET  /api/monitoring/session/:sessionId
-
-- FLOConversationModule (orchestration)
-  - POST /api/flo/coaching/init/:userId
-  - POST /api/flo/coaching/chat/:userId { message }
-  - POST /api/flo/coaching/close/:userId
-
-Run locally
-
-1. npm install
-2. npm start
-
-Notes
-
-- This is a minimal in-memory implementation for development and testing. Add a DB, proper authentication, and real LLM integration for production.
+Backend for FLO
+Modules
+1. LLMModule: For interact with FLO (Chatgpt)
+  1.1 FLOCoaching: Send the initial context data
+  1.2 FLOQuestion: Chat about FLO information (prices, whoami, plans, ...)
+2. UsersModule: For manage the user information
+  1.1 Login: Login function
+  1.2 readToolConfig: returns the tool configuration
+  1.3 readCoachingConfig: returns information for coaching sessions
+  1.4 NewPlan: for updating when user buy a new Plan
+  1.5 UpdatePlan: for updating when the user starts a new session
+  1.6 ReadPlan: returns the information for the active Plan
+3. ConversationPersistModule: For persists conversations with FLO
+  3.1 Save: for saving a conversation with FLO (with information about user, and FLOSessionID)
+  3.2 Read: for returning a conversation with FLO
+4. MonitoringModule: For saving all the information about use of FLO
+  4.1 NewSession: Save for a new session opened in FLO (SessionID, startdate, user, type of session)
+  4.2 SessionEnd: Save for a session ended, updating the data (finishdate, minutes, closedbyuser, FLOinteractions, UserInteractions, feedback)
+5. FLOConversationModule: Orchestation for the information about a session
+  5.1 FLOCoachingInit: check plan status, update plan use, query for user context for sending  initial context data to FLO, save monitoring data
+  5.2 FLOCoachingUserChat: Chat with FLO, monitoring time, send custom feedback to the user in case of events (f.e time expired, save the conversation or contact with a human coach)
+  5.3 FLOCoachingClose: Message for closing the conversation (goodbye message, updated plan status, feedback), save monitoring data
+  5.4 FLOQuestion: Chat about FLO information (prices, whoami, plans, ...)
+  
