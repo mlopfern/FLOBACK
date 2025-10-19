@@ -1,0 +1,16 @@
+https://floback-three.vercel.app/
+
+// llamada a api llm método coaching
+curl -s -X POST https://floback-three.vercel.app/api/llm/coaching/demo   -H "Content-Type: application/json"   -d '{"text":"Quiero iniciar una sesión de coaching: contexto breve..."}' | jq
+
+// llamada a api llm método question
+curl -s -X POST https://floback-three.vercel.app/api/llm/question/demo   -H "Content-Type: application/json"   -d '{"text":"Precio..."}' | jq
+
+// llamada a api authenticator método login
+curl -s -X POST https://floback-three.vercel.app/api/auth/login   -H "Content-Type: application/json"    | jq
+
+// llamada a api authenticator método validate
+curl -s -X POST https://floback-three.vercel.app/api/auth/validate   -H "Content-Type: application/json"    | jq
+
+// llamada a api authenticator método logout
+curl -s -X POST https://floback-three.vercel.app/api/auth/logout   -H "Content-Type: application/json"    | jq
